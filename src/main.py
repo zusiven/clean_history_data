@@ -2,6 +2,7 @@ import datetime as dt
 from pathlib import Path
 
 from mlog_util import get_logger, MultiProcessSafeSizeRotatingHandler
+from wztools.utils import load_toml
 
 from src.cleaner import delete_old_files_and_empty_dirs
 from config.clean_list import directories
@@ -15,10 +16,8 @@ def main():
     now = dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     total = len(directories)
 
-    logger.info("=" * 50)
-    logger.info(f"  历史文件清理开始")
-    logger.info(f"  时间: {now}  共 {total} 个目录")
-    logger.info("=" * 50)
+    logger.info(f"  历史文件清理开始  {now}  共 {total} 个目录")
+    logger.info("-" * 50)
 
     success, skipped, failed = 0, 0, 0
 
@@ -43,7 +42,7 @@ def main():
             logger.exception(f"  ✗ 清理异常: {directory_path}")
             failed += 1
 
-    logger.info("=" * 50)
+    logger.info("-" * 50)
     logger.info(f"  清理完成")
     logger.info(f"  ✔ 成功 {success}  ⚠ 跳过 {skipped}  ✗ 失败 {failed}")
     logger.info(f"  时间: {dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")

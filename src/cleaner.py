@@ -24,12 +24,27 @@ class CleanResult:
         )
 
 
+def _format_duration(seconds: float) -> str:
+    seconds = int(seconds)
+    days    = seconds // 86400
+    hours   = (seconds % 86400) // 3600
+    mins    = (seconds % 3600) // 60
+    secs    = seconds % 60
+
+    parts = []
+    if days:  parts.append(f"{days} 天")
+    if hours: parts.append(f"{hours} 小时")
+    if mins:  parts.append(f"{mins} 分")
+    if secs:  parts.append(f"{secs} 秒")
+    return " ".join(parts) or "0 秒"
+
+
 def delete_old_files_and_empty_dirs(folder_path: str, expire_seconds: float) -> CleanResult:
     folder = Path(folder_path)
     current_time = time.time()
 
     logger.info(f"  ┌─ 目录: {folder}")
-    logger.info(f"  ├─ 阈值: {expire_seconds:.0f} 秒")
+    logger.info(f"  ├─ 阈值: {_format_duration(expire_seconds)}")
 
     result = CleanResult()
     _delete_expired_files(folder, current_time, expire_seconds, result)

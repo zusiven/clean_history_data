@@ -1,5 +1,6 @@
 from datetime import timedelta
 
+HOUR = timedelta(hours=1).total_seconds()
 DAY  = timedelta(days=1).total_seconds()
 WEEK = timedelta(weeks=1).total_seconds()
 
